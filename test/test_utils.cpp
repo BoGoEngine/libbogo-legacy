@@ -303,7 +303,6 @@ TEST (FindTransformation, SimpleTelex) {
     transformation_w.push_back("wo+");
     transformation_w.push_back("wu+");
     transformation_w.push_back("w*v");
-    
     EXPECT_EQ (transformation_w[0], findTransformation ( "w", im)[0]);
     EXPECT_EQ (transformation_w[1], findTransformation ( "w", im)[1]);
     EXPECT_EQ (transformation_w[2], findTransformation ( "w", im)[2]);
@@ -340,8 +339,8 @@ TEST (ProcessKey, ProcessKey) {
     EXPECT_STREQ (__("mèo"), __(processKey (BACKSPACE_CODE, "mèov", im)));
     EXPECT_STREQ (__("mèo"), __(processKey ('f', "meo", im)));
     EXPECT_STREQ (__("đèo"), __(processKey ('d', "dèo", im)));
-    EXPECT_STREQ (__("đeo"), __(processKey ('z', "đèo", im)));
-    EXPECT_STREQ (__("mưa"), __(processKey ('w', "mua", im)));
+    EXPECT_STREQ (__("đeo"), __(processKey ('Z', "đèo", im)));
+    EXPECT_STREQ (__("mưA"), __(processKey ('w', "muA", im)));
     EXPECT_STREQ (__("rươi"), __(processKey ('w', "ruoi", im)));
     EXPECT_STREQ (__("ruòi"), __(processKey ('f', "ruoi", im)));
     EXPECT_STREQ (__("ruoiw"), __(processKey ('w', "rươi", im)));
@@ -353,7 +352,11 @@ TEST (ProcessKey, ProcessKey) {
     EXPECT_STREQ (__("chuyệk"), __(processKey ('j', "chuyêk", im)));
     EXPECT_STREQ (__("quảđur"), __(processKey ('r', "quảđủ", im)));
     EXPECT_STREQ (__("mèokckf"), __(processKey ('f', "mèokck", im)));
-    EXPECT_STREQ (__("đèo"), __(processKey ('D',"dèo", im)));
+    EXPECT_STREQ (__("chuyệk"), __(processKey ('j',"chuyêk", im)));
+    EXPECT_STREQ (__("quảđur"), __(processKey ('r', "quảđủ", im)));
+    EXPECT_STREQ (__("quảĐur"), __(processKey ('r', "quảĐủ", im)));
+    EXPECT_STREQ (__("geO"), __(processKey ('O', "ge", im)));
+    EXPECT_STREQ (__("geo"), __(processKey ('o', "ge", im)));
     EXPECT_STREQ (__("geo"), __(processKey ('o', "ge", im)));
 }
 
