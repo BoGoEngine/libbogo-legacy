@@ -2,7 +2,7 @@
 
   This file is a part of BoGoEngine project.
 
-  Copyright (C) 2012 Dương "Yang" ヤン Nguyễn <cmpitg@gmail.com>
+  Copyright (C) 2012 Dương H. Nguyễn <cmpitg@gmail.com>
 
   BoGoEngine is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -39,8 +39,80 @@ namespace BoGo {
 #undef __
 #endif
 #define __(x) (ustring ("") + x).c_str ()
-#define have(x) find(x) != ustring::npos
-#define dont_have(x) find(x) == ustring::npos
+
+    bool containsP (ustring str, ustring needle, bool ignoreCase) {
+        if (ignoreCase) {
+            str = str.lowercase ();
+            needle = needle.lowercase ();
+        }
+        return str.find (needle) != ustring::npos;
+    }
+
+    bool containsP (string str, ustring needle, bool ignoreCase) {
+        return containsP (_(str), needle, ignoreCase);
+    }
+
+    bool containsP (const gchar *str, ustring needle, bool ignoreCase) {
+        return containsP (_(str), needle, ignoreCase);
+    }
+
+    bool containsP (ustring str, string needle, bool ignoreCase) {
+        return containsP (str, _(needle), ignoreCase);
+    }
+
+    bool containsP (string str, string needle, bool ignoreCase) {
+        return containsP (_(str), _(needle), ignoreCase);
+    }
+
+    bool containsP (const gchar *str, string needle, bool ignoreCase) {
+        return containsP (_(str), _(needle), ignoreCase);
+    }
+
+    bool containsP (ustring str, guint needle, bool ignoreCase) {
+        return containsP (str, _(needle), ignoreCase);
+    }
+
+    bool containsP (string str, guint needle, bool ignoreCase) {
+        return containsP (_(str), _(needle), ignoreCase);
+    }
+
+    bool containsP (const gchar *str, guint needle, bool ignoreCase) {
+        return containsP (_(str), _(needle), ignoreCase);
+    }
+
+    bool containsP (ustring str, const gchar *needle, bool ignoreCase) {
+        return containsP (str, _(needle), ignoreCase);
+    }
+
+    bool containsP (string str, const gchar *needle, bool ignoreCase) {
+        return containsP (_(str), _(needle), ignoreCase);
+    }
+
+    bool containsP (const gchar *str, const gchar *needle, bool ignoreCase) {
+        return containsP (_(str), _(needle), ignoreCase);
+    }
+
+    long find (ustring s, ustringArrayT a) {
+        for (long i = 0; i < a.size (); i++)
+            if (a[i] == s)
+                return i;
+        return -1;
+    }
+
+    bool containsP (ustringArrayT a, ustring s) {
+        return find (s, a) != -1;
+    }
+
+    ustring removeMarksFromLastWord (ustring text) {
+        _size_t_ pos = getLastPseudoWordPos (text);
+
+        if (pos == ustring::npos)
+            return text;
+
+        ustring word = text.substr (pos);
+        return text.replace (pos, text.size () - pos,
+                             removeAllMarksFromWord (word));
+    }
 
     ustring removeAllMarksFromWord (ustring word) {
         ustring res = "";
@@ -110,7 +182,7 @@ namespace BoGo {
             eolPos = imStr.find ("\n");
             transPortion = imStr.substr (0, eolPos);
             imStr = imStr.replace (0, eolPos + 1, "");
-            im = addTransformation
+            im = addTransform
                 (im, transPortion.replace (1, specialToken.length (), ""));
         }
         return standardizeIM (im);
@@ -132,20 +204,20 @@ namespace BoGo {
 
         for (guint i = 0; i < count; i++) {
             trans = va_arg (transList, const gchar *);
-            im = addTransformation (im, _(trans));
+            im = addTransform (im, _(trans));
         }
 
         va_end (transList);
         return im;
     }
 
-    InputMethodT addTransformation (InputMethodT im, ustring trans) {
+    InputMethodT addTransform (InputMethodT im, ustring trans) {
         im.push_back (trans);
         return im;
     }
 
-    InputMethodT addTransformation (InputMethodT im, const gchar *trans) {
-        return addTransformation (im, _(trans));
+    InputMethodT addTransform (InputMethodT im, const gchar *trans) {
+        return addTransform (im, _(trans));
     }
 
     ustring toString (InputMethodT im) {
@@ -522,8 +594,16 @@ namespace BoGo {
         return isLowerCase (_(ch));
     }
 
-    ustring toRawText (ustring str) {
-        return removeAllMarksFromWord (removeAccentFromWord (str)).lowercase();
+    ustring toRawText (ustring text) {
+        return removeAllMarksFromWord (removeAccentFromWord (text)).lowercase();
+    }
+
+    ustring toRawText (string text) {
+        return toRawText (_(text));
+    }
+
+    ustring toRawText (const gchar *text) {
+        return toRawText (_(text));
     }
 
     ustring toEnglishText (ustring str) {
@@ -538,215 +618,440 @@ namespace BoGo {
         return comp[0] + comp[1] + comp[2];
     }
 
-    ustring addAccentToWord (ustring str, Accents accent) {
-        //  ustring rawStr = removeAccentFromWord (str);
-        //  if (accent == NO_ACCENT) return str;
+    _size_t_ findSpecialVowel (ustring text) {
+        for (_size_t_ pos = 0; pos < text.size (); pos++) {
+            if (containsP (SpecialVowels,
+                           toRawText (_(text[pos]))))
+                return pos;
+        }
+        return ustring::npos;
+    }
 
-        ustringArrayT comp = analyseWord (str);
+    _size_t_ findSpecialVowel (string text) {
+        return findSpecialVowel (_(text));
+    }
+
+    _size_t_ findSpecialVowel (const gchar *text) {
+        return findSpecialVowel (_(text));
+    }
+
+    ustring addAccentToWord (ustring word, Accents accent) {
+        // // Case: removing accent
+        // if (accent == NO_ACCENT)
+        //     return removeAccentFromWord (word);
+
+        // Analyzing the word into 3 components
+        // comp[0] = consonantPiece #1
+        // comp[1] = vowelPiece
+        // comp[2] = consonantPiece #2
+        ustringArrayT comp = analyseWord (word);
         comp[1] = removeAccentFromWord (comp[1]);
-        if (accent == NO_ACCENT)
-            return comp[0] + comp[1] + comp[2];
-        if (comp[2].size () > 2) {
-            return str;
+        ustring vowelPiece = comp[1];
+        ustring consonantPiece = comp[2];
+        ustring newChar;
+
+        // Case: no vowels
+        if (vowelPiece.size () == 0)
+            return word;
+
+        // Case #1: vowelPiece contains special vowel ("ăâơê")
+        _size_t_ posToPlaceAccent = findSpecialVowel (vowelPiece);
+        if (posToPlaceAccent != ustring::npos) {
+            // Do nothing, the position is right
         }
 
-        ustring vowel = comp[1];
-        if (vowel == "") return str;
+        // Case #2: consonantPiece exists
+        else if (consonantPiece.size () > 0)
+            posToPlaceAccent = vowelPiece.size () - 1;
 
+        // Case #3: vowelPiece contains 3 letters
+        else if (vowelPiece.size () == 3)
+            posToPlaceAccent = 1;
 
-        ustring ch;
-        ustring rawVowel = toRawText (vowel);
-        _size_t_ vowelSize = vowel.size ();
-        _size_t_ pos;
-
-        for ( _size_t_ i = 0; i < 4; i++) {
-            pos = rawVowel.find (SpecialSingleVowel[i]);
-            if (pos != ustring::npos) break;
-        }
-
-        if (pos == ustring::npos) {
-            if (comp[2] == "")
-                pos = ( vowelSize <= 2) ? 0 : vowelSize - 2;
-            else pos = vowel.size () -1;
-        }
-
-        vowel = vowel.replace (pos, 1, addAccentToChar (vowel[pos], accent));
-        return comp[0] + vowel + comp[2];
-    }
-
-
-    ustring addAccentToText (ustring str, Accents accent) {
-        return addAccentToWord (str, accent);
-    }
-
-    ustring addAccentToText (ustring str, ustring transf) {
-        _size_t_ pos = AccentTransformations.find (transf);
-        if (pos != ustring::npos)
-            return addAccentToText (str, ACCENTS[pos/2]);
-        return str;
-    }
-
-    ustring addMarkToWord (ustring str, Marks mark) {
-        if (mark == NO_MARK)
-            return removeAllMarksFromWord (str);
-        guint lpos = str.size () -1;
-        ustring lastChar = _(str[lpos]);
-        ustring firstPart = ustring (str, 0, lpos);
-
-        if (lpos == 0) {
-            if (canAddMarkToLetter (lastChar, mark)) {
-                return addMarkToChar (lastChar, mark);
-            }
-            return lastChar;
-        }
-        // Special case : uo ươ
-        if ((lpos > 0) && (mark == HORN) &&
-            (toRawText(lastChar) == "o" ) &&
-            (toRawText (_(str[lpos -1])) == "u")) {
-            return
-                ((lpos >= 2) ? ustring (str, 0, lpos - 1) : "")
-                + addMarkToChar (str[lpos-1], HORN)
-                + addMarkToChar (str[lpos], HORN);
-        }
-
-        // Special case: ua + w -> ưa not uă
-        if ((lpos > 0) && (mark == BREVE) &&
-            (toRawText(lastChar) == "a" ) &&
-            (toRawText (_(str[lpos -1])) == "u")) {
-            return
-                ((lpos >= 2) ? ustring (str, 0, lpos - 1) : "")
-                + addMarkToChar (str[lpos-1], HORN)
-                + str[lpos];
-        }
-
-        if (canAddMarkToLetter (lastChar, mark))
-            return firstPart + addMarkToChar (lastChar, mark);
+        // Otherwise
         else
-            return addMarkToWord (firstPart, mark)  + lastChar;
+            posToPlaceAccent = 0;
 
-        return str;
+        return comp[0] +
+            vowelPiece.replace (posToPlaceAccent, 1,
+                                addAccentToChar (
+                                    vowelPiece[posToPlaceAccent],
+                                    accent)) +
+            consonantPiece;
     }
 
-    ustring addMarkToText (ustring str, ustring transf) {
-        _size_t_ pos = MarkTransformations.find (transf);
-        gchar AffectedChar = transf[0];
-        if (( AffectedChar != '*') &&
-            ( toRawText (str).dont_have (AffectedChar)))
-            return str;
-        return addMarkToWord (str, MARKS[pos/2]);
+    ustring addAccentToWord (string word, Accents accent) {
+        return addAccentToWord (_(word), accent);
     }
 
-    bool canAddMarkToLetter (ustring ch, Marks mark) {
-        ustring _ch = toRawText (ch);
-        switch (mark) {
-        case HAT:
-            if (_("aeo").have (_ch))
-                return true;
-            break;
-        case HORN:
-            if (_("ou").have (_ch))
-                return true;
-            break;
-        case BREVE:
-            if (_ch == "a")
-                return true;
-            break;
-        case BAR:
-            if (_ch == "d")
-                return true;
-            break;
-        case NO_MARK:
+    ustring addAccentToWord (const gchar *word, Accents accent) {
+        return addAccentToWord (_(word), accent);
+    }
+
+    bool endsWith (ustring text, ustring pattern) {
+        // Ignore case
+        _size_t_ pos = text.lowercase ().rfind (pattern.lowercase ());
+        return pos != ustring::npos && (text.size () - pos == pattern.size ());
+    }
+
+    bool hasValidEndingConsonantsP (ustring word) {
+        if (word.size () == 0 || isVowel (lastChar (word)))
             return true;
-            break;
-        }
+
+        for (guint i = 0; i < NUMBER_OF_VALID_ENDING_CONSONANTS; i++)
+            if (endsWith (word, ValidEndingConsonants[i]))
+                return true;
         return false;
     }
 
-    bool canAddMarkToLetter (gchar ch, Marks mark) {
-        return canAddMarkToLetter (_(ch), mark);
-    }
+    _size_t_ getLastPseudoWordPos (ustring text) {
+        // Get the position of the beginning of the last word in a
+        // text by consecutively finding: longest consonant piece,
+        // longest vowel piece, and check for special cases.
 
+        _size_t_ result = text.size () - 1;
+        while (result > 0 && isConsonant (text[result]))
+            result--;
 
-    ustring getTransformation (ustring key_transf) {
-        /* get the transformation part from the string describing the
-           transformation
-           ex: "a a+" -> "a+" */
-        ustring transf = key_transf.erase (0,1);
-        while (transf[0] == ' ' ) {
-            transf.erase(0,1);
+        // Case: all letters are consonants
+        if (result == 0 && isConsonant (text[0]))
+            return ustring::npos;
+
+        // Case: invalid ending consonants
+        if (!hasValidEndingConsonantsP (text.substr (result + 1)));
+
+        while (result > 0 && isVowel (text[result]))
+            result--;
+
+        // Case: all consonants
+        if (result == 0 && isVowel (text[0]))
+            return 0;
+
+        result++;
+
+        // Special cases: "qu" and "gi"
+        if (result > 0) {
+            ustring maybeSpecial =
+                (_(text[result - 1]) + _(text[result])).lowercase ();
+            if (maybeSpecial == "qu" || maybeSpecial == "gi")
+                return (result + 1) >= text.size () ?
+                    ustring::npos : (result + 1);
         }
-        return transf;
+
+        return result;
     }
 
-    ustringArrayT  findTransformation (ustring ch, InputMethodT im) {
-        /* Because a key can associate with more than 1 transformation,
-           we need to know what transfrom are possible */
-        ustringArrayT  transforms;
+    _size_t_ getLastPseudoWordPos (string text) {
+        return getLastPseudoWordPos (_(text));
+    }
+
+    _size_t_ getLastPseudoWordPos (const gchar *text) {
+        return getLastPseudoWordPos (_(text));
+    }
+
+    ustring addAccentToText (ustring text, Accents accent) {
+        _size_t_ pos = getLastPseudoWordPos (text);
+
+        // Case: no word inside text
+        if (pos == ustring::npos)
+            return text;
+
+        ustring firstPart = text.substr (0, pos);
+        ustring lastWord = text.substr (pos);
+
+        if (hasValidEndingConsonantsP (lastWord))
+            return firstPart + addAccentToWord (lastWord, accent);
+        else
+            return text;
+    }
+
+    ustring addAccentToText (string text, Accents accent) {
+        return addAccentToText (_(text), accent);
+    }
+
+    ustring addAccentToText (const gchar *text, Accents accent) {
+        return addAccentToText (_(text), accent);
+    }
+
+    ustring addMarkToWord (ustring word, Marks mark, gchar letter) {
+        if (mark == NO_MARK)
+            return removeAllMarksFromWord (word);
+
+        letter = _(letter).lowercase ()[0];
+        _size_t_ pos = ustring::npos;
+        ustring lowCaseWord = removeAccentFromWord (word).lowercase ();
+
+        // 1. Find the last position of the letter corresponding
+        // to the mark
+        if (letter == '*') {
+            bool found = false;
+            for (_size_t_ i = word.size () - 1; i != 0; i--) {
+                if (canAddMarkToLetterP (_(lowCaseWord[i]), mark)) {
+                    pos = i;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                if (canAddMarkToLetterP (_(lowCaseWord[0]), mark))
+                    pos = 0;
+                else
+                    pos = ustring::npos;
+            }
+        }
+        else {
+            pos = lowCaseWord.find (_(letter));
+            if (letter == 'u' &&
+                pos < word.size () - 1 &&
+                (lowCaseWord[pos + 1] == 'u' ||
+                 lowCaseWord[pos + 1] == 'o'))
+                pos++;
+        }
+
+        // cerr << "Word: " << __(word) << " -> "
+        //      << pos << endl;
+
+        // 1'. In case there is no letter to add mark to
+        if (pos == ustring::npos)
+            return word;
+
+        // Special case: "qu"
+        bool quCase =
+            ((pos > 0 && lowCaseWord[pos] == 'u' &&
+              lowCaseWord[pos - 1] == 'q') ||
+             (pos > 1 && lowCaseWord[pos - 1] == 'u' &&
+              lowCaseWord[pos - 2] == 'q'));
+
+        // 2. Special case: "ưu" and "ươ"
+        if (!quCase && pos >= 1 && mark == HORN) {
+            ustring maybeSpecial =
+                _(lowCaseWord[pos - 1]) + _(lowCaseWord[pos]);
+            if (maybeSpecial == "uu")
+                return word.replace (pos - 1, 1,
+                                     addMarkToChar (word[pos - 1], HORN));
+            if (maybeSpecial == "uo")
+                return word.replace (pos - 1, 2,
+                                     addMarkToChar (word[pos - 1], HORN) +
+                                     addMarkToChar (word[pos], HORN));
+        }
+
+        // 2'. Special case: "au", "ao", "ua", and "oa"
+        if (!quCase && (mark == BREVE || mark == HORN)) {
+            ustring maybeSpecial1 = "";
+            ustring maybeSpecial2 = "";
+            if (pos > 0)
+                maybeSpecial1 = _(lowCaseWord[pos - 1]) + _(lowCaseWord[pos]);
+            if (pos < word.size () - 1)
+                maybeSpecial2 = _(lowCaseWord[pos]) + _(lowCaseWord[pos + 1]);
+
+            // cerr << "Word: " << __(word) << " -> "
+            //      << __(maybeSpecial1) << " -> "
+            //      << __(maybeSpecial2) << endl;
+
+            if (maybeSpecial1 == "au" || maybeSpecial1 == "ao" ||
+                maybeSpecial2 == "au" || maybeSpecial2 == "ao" ||
+                ((maybeSpecial1 == "ua" || maybeSpecial2 == "ua") &&
+                 mark != HORN) ||
+                ((maybeSpecial1 == "oa" || maybeSpecial2 == "oa") &&
+                 mark != BREVE))
+                return word;
+        }
+
+        // 2''. Add mark the char, care not about the case since
+        // addMarkToChar has taken care of that
+        ustring newLetter = addMarkToChar (word[pos], mark);
+        return word.replace (pos, 1, newLetter);
+    }
+
+    ustring addMarkToWord (string word, Marks mark, gchar letter) {
+        return addMarkToWord (_(word), mark, letter);
+    }
+
+    ustring addMarkToWord (const gchar *word, Marks mark, gchar letter) {
+        return addMarkToWord (_(word), mark, letter);
+    }
+
+    ustring addMarkToText (ustring text, Marks mark, gchar letter) {
+        // mark == BAR is the special case
+        if (mark == BAR || hasValidEndingConsonantsP (text))
+            return addMarkToWord (text, mark, letter);
+        else
+            return text;
+    }
+
+    bool canAddMarkToLetterP (ustring letter, Marks mark) {
+        return containsP (ValidLettersToMark[mark],
+                          toPlainLetter (letter).lowercase ());
+    }
+
+    bool canAddMarkToLetterP (const gchar *letter, Marks mark) {
+        return canAddMarkToLetterP (_(letter), mark);
+    }
+
+    // This function has glitches when dealing with non-ascii character
+    // bool canAddMarkToLetterP (const gchar letter, Marks mark) {
+    //     return canAddMarkToLetterP (_(letter), mark);
+    // }
+
+    ustring getTransformResult (ustring key_trans) {
+        ustring trans = key_trans.erase (0, 1);
+        while (trans[0] == ' ' ) {
+            trans.erase(0, 1);
+        }
+        return trans;
+    }
+
+    ustringArrayT findTransform (ustring ch, InputMethodT im) {
+        ustringArrayT trans;
         for (guint i = 0; i < im.size(); i++) {
             ustring tr = im[i];
             if (ch == _(tr[0])) {
-                transforms.push_back (tr);
+                trans.push_back (tr);
             }
         }
-        return transforms;
+        return trans;
     }
 
-    ustring addCharToWord (ustring str, ustring ch) {
+    ustring addChar (ustring str, ustring ch) {
         return str + ch;
     }
 
-    ustring (*filterTransformation (ustring key_transf )) (ustring, ustring) {
-        ustring transf = getTransformation (key_transf);
-        if (MarkTransformations.have (transf))
-            return &addMarkToText;
+    // TransformFuncT *getTransformResultFunc (ustring key_transf) {
+    //     ustring transf = getTransformResult (key_transf);
 
-        if (AccentTransformations.have (transf))
-            return &addAccentToText;
-        return &addCharToWord;
-    }
+    //     if (containsP (MarkTransforms, transf))
+    //         return &addMarkToText;
 
-    Transform getTypeTranformation (ustring key_transf) {
-        //Determine the type of transformation: add mark or add accent
-        ustring transf = getTransformation (key_transf);
-        if (MarkTransformations.have (transf))
-            return ADD_MARK;
+    //     if (containsP (AccentTransforms, transf))
+    //         return &addAccentToText;
 
-        if (AccentTransformations.have (transf))
-            return ADD_ACCENT;
+    //     return &addChar;
+    // }
 
-        return ADD_CHAR;
-    }
+    // Transform getTransformType (ustring key_trans) {
+    //     // Determine the type of: add mark, add accent, or just char
+    //     ustring trans = getTransformResult (key_trans);
 
+    //     if (containsP (MarkTransforms, trans))
+    //         return ADD_MARK;
 
-    ustring processKey (gchar key, ustring str, InputMethodT im) {
-        // Default input method is telex and default charset is UTF8
-        ustring ch = _(key);
+    //     if (containsP (AccentTransforms, trans))
+    //         return ADD_ACCENT;
 
-        if (ch == _(BACKSPACE_CODE)) {
-            str.erase (str.size() - 1, 1);
-            return str;
+    //     return ADD_CHAR;
+    // }
+
+    Accents getAccentFromWord (ustring word) {
+        for (_size_t_ i = 0; i < word.size (); i++) {
+            Accents c = getAccentFromChar (__(word[i]));
+            if (c != NO_ACCENT)
+                return c;
         }
-        ustring (*doTransform) (ustring, ustring);
-        ustring newStr = str;
-        ustringArrayT transforms = findTransformation (toRawText (ch), im);
-        Transform kind;
-        if (transforms.size () != 0) {
-            for (_size_t_ i = 0; i < transforms.size (); i++) {
-                doTransform = filterTransformation (transforms[i]);
-                kind = getTypeTranformation (transforms[i]);
-                newStr = doTransform (newStr,
-                                      getTransformation (transforms[i]));
+        return NO_ACCENT;
+    }
+
+    TransformTypeT getTransformType (const gchar transChar) {
+        switch (transChar) {
+        case '^':
+        case '+':
+        case 'v':
+        case '-':
+            return TRANSFORM_MARK;
+        default:
+            return TRANSFORM_ACCENT;
+        }
+    }
+
+    TransformT getTransform (const gchar transChar) {
+        switch (transChar) {
+        case '^':
+            return HAT;
+        case '+':
+            return HORN;
+        case 'v':
+            return BREVE;
+        case '-':
+            return BAR;
+        case '\\':
+            return GRAVE;
+        case '/':
+            return ACUTE;
+        case '?':
+            return HOOK;
+        case '~':
+            return TILDE;
+        case '.':
+            return DOT;
+        case '_':
+            return NO_ACCENT;
+        }
+        return INVALID_TRANSFORM;
+    }
+
+    ustring processKeyUTF8 (ustring text, char key, InputMethodT im,
+                            guint BackspaceChar) {
+        // Case: Backspace character
+        if (key == BackspaceChar) {
+            _size_t_ pos = getLastPseudoWordPos (text);
+
+            // Case: no word inside text
+            if (pos == ustring::npos)
+                return text.substr (0, text.size () - 1);
+
+            ustring firstPart = text.substr (0, pos);
+            ustring lastWord = text.substr (pos);
+            Accents accent = getAccentFromWord (lastWord);
+            lastWord.replace (lastWord.size () - 1, 1, "");
+            return firstPart + addAccentToWord (lastWord, accent);
+        }
+
+        gchar lowCaseKey = _(key).lowercase ()[0];
+        ustringArrayT availTrans = findTransform (__(lowCaseKey), im);
+
+        // Case: `key` is not for transforming
+        if (availTrans.size () == 0)
+            return addChar (text, _(key));
+
+        TransformTypeT markOrAccent;
+        // cerr << "Text >> " << __(text) << " -> " << endl;
+        ustring res = "";
+
+        for (guint i = 0; i < availTrans.size (); i++) {
+            const gchar *trans = availTrans[i].c_str ();
+            TransformTypeT tmpMarkOrAccent = getTransformType (trans[2]);
+            TransformT tmpTrans = getTransform (trans[2]);
+            ustring tmpRes;
+
+            if (tmpMarkOrAccent == TRANSFORM_MARK)
+                tmpRes = addMarkToText (text, tmpTrans, trans[1]);
+            else
+                tmpRes = addAccentToText (text, tmpTrans);
+
+            // cerr << " >> " << trans << " -> "
+            //      << "mark? " << (tmpMarkOrAccent == TRANSFORM_MARK) << " -> "
+            //      << "trans: " << tmpTrans << " -> "
+            //      << __(tmpRes) << endl;
+
+            if (res == "" || (tmpRes != text && res != "")) {
+                res = tmpRes;
+                markOrAccent = tmpMarkOrAccent;
             }
-        } else
-            newStr = addCharToWord (str, ch);
-        if (newStr == str) {
-            if (kind == ADD_MARK)
-                newStr = addCharToWord (removeAllMarksFromWord (str), ch);
-            if (kind == ADD_ACCENT)
-                newStr = addCharToWord (removeAccentFromLastWord (str), ch);
         }
 
-        return newStr;
+        // Case: fallback to English
+        if (res.size () == 0 || res == text) {
+            if (markOrAccent == TRANSFORM_MARK)
+                res = addChar (removeMarksFromLastWord (text), _(key));
+            else
+                res = addChar (removeAccentFromLastWord (text), _(key));
+        }
+
+        return res;
+    }
+
+    ustring processKey (ustring text, char key, InputMethodT im,
+                        guint BackspaceChar) {
+        return processKeyUTF8 (text, key, im, BackspaceChar);
     }
 
 #undef _
