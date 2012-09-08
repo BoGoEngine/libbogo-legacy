@@ -1,0 +1,29 @@
+Source: bogo
+Section: utils
+Priority: optional
+Maintainer: Trung Ngo <ndtrung4419@gmail.com>
+Build-Depends: debhelper (>= 8.1.3),
+ pkg-config,
+ cmake
+Standards-Version: 3.9.3
+#Homepage: <insert the upstream URL, if relevant>
+#Vcs-Git: git://git.debian.org/collab-maint/sleepy.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/sleepy.git;a=summary
+
+Package: libbogo
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: BoGo Vietnamese input engine
+ BoGo is a modern Vietnamese input engine
+
+Package: libbogo-dev
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: BoGo Vietnamese input engine -- development headers
+ BoGo is a modern Vietnamese input engine
+
+Package: python-bogo
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends} libbogo
+Description: BoGo Vietnamese input engine -- Python development support
+ BoGo is a modern Vietnamese input engine
