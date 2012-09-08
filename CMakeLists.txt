@@ -14,6 +14,7 @@ link_directories (${GLIBMM_LIBRARY_DIRS})
 
 # Directories with CMakeLists.txt
 add_subdirectory (src)
+add_subdirectory (bindings)
 add_subdirectory (test)
 
 # Output - executables

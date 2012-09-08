@@ -20,11 +20,10 @@
 */
 
 #include <engine.hpp>
-#define PYFUNCTION extern "C"
 
 using namespace BoGo;
 
-PYFUNCTION const char* py_processKey  (char* text, char key) {
+extern "C" const char* c_processKey  (char* text, char key) {
         ustring utext = ustring(text);
         return processKey (utext, key).c_str ();
 }
