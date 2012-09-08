@@ -36,6 +36,15 @@ Tài liệu nằm trong thư mục **docs** của dự án, đồng thời có t
 * glibmm 2.4
 * gcc 4.2+
 
+**Ghi chú:** trước khi có thể biên dịch, bạn cần vào thư mục gốc của project,
+chạy lệnh:
+
+$ git submodule init
+$ git submodule update
+
+để tải gtest về thư mục ./gtest, hoặc bạn có thể comment dòng add_subdirectory (test)
+trong file CMakeLists.txt
+
 ### Cho việc sử dụng
 
 * glibmm 2.4
