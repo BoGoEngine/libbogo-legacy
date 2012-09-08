@@ -19,12 +19,9 @@ add_library (bogopython SHARED
   cdll_interfaces.cpp
   )
 
-target_link_libraries (bogopython
-  ${GLIBMM_LIBRARIES}
-  )
+target_link_libraries (bogopython ${GLIBMM_LIBRARIES})
 
 install (TARGETS
   bogopython
-  DESTINATION
-  /usr/share/ibus-bogo/
+  LIBRARY DESTINATION lib
   )
