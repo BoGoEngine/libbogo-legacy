@@ -36,6 +36,17 @@ Tài liệu nằm trong thư mục **docs** của dự án, đồng thời có t
 * glibmm 2.4
 * gcc 4.2+
 
+### Cho việc sử dụng
+
+* glibmm 2.4
+* gcc 4.2+
+
+## Hướng dẫn build
+
+### Build bình thường
+$ mkdir build && cd build
+$ cmake .. && make install
+
 **Ghi chú:** trước khi có thể biên dịch, bạn cần vào thư mục gốc của project,
 chạy lệnh:
 
@@ -45,10 +56,21 @@ $ git submodule update
 để tải gtest về thư mục ./gtest, hoặc bạn có thể comment dòng add_subdirectory (test)
 trong file CMakeLists.txt
 
-### Cho việc sử dụng
+### Build gói debian
 
-* glibmm 2.4
-* gcc 4.2+
+Cần cài gói:
+* devscripts
+
+$ git checkout debian
+$ git checkout -b build
+$ git merge master
+$ debuild -us -uc
+
+(optional - xóa branch build)
+$ git branch -D build
+
+**Ghi chú:** debian là một branch riêng chỉ chứa thư mục debian. Do vậy nên
+không được merge trực tiếp vào đây mà phải copy sang branch build mới được merge.
 
 ## Giấy phép xuất bản (License)
 
@@ -63,8 +85,8 @@ Bản quyền (C) năm 2012 bởi:
 * Nguyễn Hà Dương <cmpitg@gmail.com>
 * Nguyễn Thành Hải <phaikawl@gmail.com>
 * Đàm Tiến Long <longdt90@gmail.com>
+* Ngô Trung <ndtrung4419@gmail.com>
 
 Xin chân thành gửi lời cảm ơn đặc biệt đến:
 
-* Ngô Trung <ndtrung4419@gmail.com>
 * Hoàng Minh Thắng <hoangminhthang@xaydunghoanglong.com>
