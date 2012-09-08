@@ -44,14 +44,15 @@ Tài liệu nằm trong thư mục **docs** của dự án, đồng thời có t
 ## Hướng dẫn build
 
 ### Build bình thường
-$ mkdir build && cd build
-$ cmake .. && make install
+
+    $ mkdir build && cd build
+    $ cmake .. && make install
 
 **Ghi chú:** trước khi có thể biên dịch, bạn cần vào thư mục gốc của project,
 chạy lệnh:
 
-$ git submodule init
-$ git submodule update
+    $ git submodule init
+    $ git submodule update
 
 để tải gtest về thư mục ./gtest, hoặc bạn có thể comment dòng add_subdirectory (test)
 trong file CMakeLists.txt
@@ -59,15 +60,19 @@ trong file CMakeLists.txt
 ### Build gói debian
 
 Cần cài gói:
+
 * devscripts
 
-$ git checkout debian
-$ git checkout -b build
-$ git merge master
-$ debuild -us -uc
+Commands:
 
+    $ git checkout debian
+    $ git checkout -b build
+    $ git merge master
+    $ debuild -us -uc
+   
 (optional - xóa branch build)
-$ git branch -D build
+
+    $ git branch -D build
 
 **Ghi chú:** debian là một branch riêng chỉ chứa thư mục debian. Do vậy nên
 không được merge trực tiếp vào đây mà phải copy sang branch build mới được merge.
