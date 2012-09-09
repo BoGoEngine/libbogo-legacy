@@ -1,10 +1,20 @@
+add_library (bogoengine
+  engine.cpp
+  engine.hpp
+  utils.cpp
+  utils.hpp
+  charset.hpp
+  charset.cpp
+  )
+
+target_link_libraries (bogoengine ${GLIBMM_LIBRARIES})
+
+
 add_library (bogo SHARED
   engine.cpp
   engine.hpp
   utils.cpp
   utils.hpp
-  charset.cpp
-  charset.hpp
   c_interfaces.cpp
   )
 

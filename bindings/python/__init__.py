@@ -1,7 +1,7 @@
 from ctypes import *
 import Charset
 
-BoGoCpp = cdll.LoadLibrary('libbogoengine.so')
+BoGoCpp = cdll.LoadLibrary('/usr/local/lib/libbogo.so')
 
 # Cpp functions declaration here
 cpp_process_key = BoGoCpp.c_processKey
