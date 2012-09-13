@@ -1,5 +1,5 @@
-bogo (0.1.0) precise; urgency=low
+bogo (0.0.99+0.1.0alpha1) precise; urgency=low
 
-  * Initial release.
+  * Alpha1 release.
 
  -- Trung Ngo (Chin) <ndtrung4419@gmail.com>  Sat, 08 Sep 2012 10:35:29 +0700

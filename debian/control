@@ -24,7 +24,7 @@ Description: BoGo Vietnamese input engine
 
 Package: python-bogo
 Section: python
-Architecture: any
+Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},libbogo0
 Description: BoGo Vietnamese input engine -- Python development support
  BoGo is a modern Vietnamese input engine
