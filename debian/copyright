@@ -3,7 +3,12 @@ Upstream-Name: bogo
 Source: https://github.com/bogoengine/bogo
 
 Files: *
-Copyright: 2012 Ngo Trung <ndtrung4419@gmail.com>
+Copyright: 
+ Copyright 2012 Nguyễn Hà Dương cmpitg@gmail.com
+ Copyright 2012 Nguyễn Thành Hải phaikawl@gmail.com
+ Copyright 2012 Đàm Tiến Long longdt90@gmail.com
+ Copyright 2012 Ngô Trung ndtrung4419@gmail.com
+
 License: GPL-3
  /usr/share/common-licenses/GPL-3
 
