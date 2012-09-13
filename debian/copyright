@@ -1,10 +1,11 @@
-Format: http://dep.debian.net/deps/dep5
-Upstream-Name: sleepy
-Source: https://github.com/lewtds/sleepy
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: bogo
+Source: https://github.com/bogoengine/bogo
 
 Files: *
 Copyright: 2012 Ngo Trung <ndtrung4419@gmail.com>
 License: GPL-3
+ /usr/share/common-licenses/GPL-3
 
 Files: debian/*
 Copyright: 2012 Trung Ngo <ndtrung4419@gmail.com>

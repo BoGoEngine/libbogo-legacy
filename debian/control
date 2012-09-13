@@ -10,20 +10,22 @@ Standards-Version: 3.9.3
 #Vcs-Git: git://git.debian.org/collab-maint/sleepy.git
 #Vcs-Browser: http://git.debian.org/?p=collab-maint/sleepy.git;a=summary
 
-Package: libbogo
+Package: libbogo0
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: BoGo Vietnamese input engine
  BoGo is a modern Vietnamese input engine
 
-Package: libbogo-dev
-Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: BoGo Vietnamese input engine -- development headers
- BoGo is a modern Vietnamese input engine
+#Package: libbogo-dev
+#Section: libdevel
+#Architecture: all
+#Depends: ${shlibs:Depends}, ${misc:Depends}
+#Description: BoGo Vietnamese input engine -- development headers
+# BoGo is a modern Vietnamese input engine
 
 Package: python-bogo
+Section: python
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends} libbogo
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},libbogo0
 Description: BoGo Vietnamese input engine -- Python development support
  BoGo is a modern Vietnamese input engine
