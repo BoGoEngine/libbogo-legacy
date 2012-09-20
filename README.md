@@ -30,11 +30,13 @@ Tài liệu nằm trong thư mục **docs** của dự án, đồng thời có t
 
 ## Yêu cầu
 
+Các gói cần phải cài đặt trên hệ thống Ubuntu. Nếu bạn sử dụng một distro khác, 
+vui lòng tham khảo cách đặt tên trong distro của bạn.
+
 ### Cho việc biên dịch
 
-* CMake 2.6+
-* glibmm 2.4
-* gcc 4.2+
+* cmake
+* glibmm-2.4-dev
 
 ### Cho việc sử dụng
 

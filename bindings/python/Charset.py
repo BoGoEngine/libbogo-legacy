@@ -20,6 +20,7 @@
 # along with IBus-BoGo.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+# TODO: Remove unnecessary conversions (a->a)
 tcvn3_charset = ('A','a','¸','¸','µ','µ','¶','¶','·','·','¹','¹',
     '¢','©','Ê','Ê','Ç','Ç','È','È','É','É','Ë','Ë',
     '¡','¨','¾','¾','»','»','¼','¼','½','½','Æ','Æ',
@@ -63,5 +64,9 @@ utf8_charset = (u'A',u'a','á',u'á',u'à',u'à',u'ả',u'ả',u'ã',u'ã',u'ạ
 def utf8_to_tcvn3(utf8_string):
     tcvn3_string = ""
     for c in utf8_string:
-        tcvn3_string += tcvn3_charset[utf8_charset.index(c)]
+        try:
+            tcvn3_c = tcvn3_charset[utf8_charset.index(c)]
+        except ValueError:
+            tcvn3_c = c
+        tcvn3_string += tcvn3_c
     return tcvn3_string
