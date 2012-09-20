@@ -83,6 +83,7 @@ TEST (TextManipulation, AddAccentToText) {
     EXPECT_STREQ ("nokckf", __(addAccentToText ("nokckf", TILDE)));
     EXPECT_STREQ ("gôu", __(addAccentToText ("gốu", NO_ACCENT)));
     EXPECT_STREQ ("sách", __(addAccentToText ("sach", ACUTE)));
+    EXPECT_STREQ ("gì", __(addAccentToText ("gi", GRAVE)));
 }
 
 TEST (TextManipulation, ValidEndingConsonants) {
@@ -238,6 +239,10 @@ TEST (WordHelpers, WordSeparator) {
                  analyseWord ("qUaN"));
     EXPECT_TRUE (makeustringVec3 ("Gi", "Áo", "") ==
                  analyseWord ("GiÁo"));
+    EXPECT_TRUE (makeustringVec3 ("G", "i", "") ==
+                 analyseWord ("Gi"));
+    EXPECT_TRUE (makeustringVec3 ("G", "i", "n") ==
+                 analyseWord ("Gin"));
 }
 
 TEST (CharacterHelpers, ConsonantsAndVowels) {

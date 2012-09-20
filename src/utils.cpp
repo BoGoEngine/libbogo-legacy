@@ -314,10 +314,18 @@ namespace BoGo {
         res[0] = str + res[0];
 
         // Special case: "qu" and "gi" are considered consonants
-        if (analyseWordCheckSpecialConsonants (res, "qu") ||
-            analyseWordCheckSpecialConsonants (res, "gi")) {
+        if (analyseWordCheckSpecialConsonants (res, "qu")) {
             res[0] += _(res[1][0]);
             res[1] = res[1].replace (0, 1, "");
+        }
+
+        if (analyseWordCheckSpecialConsonants (res, "gi")) {
+            res[0] += _(res[1][0]);
+            res[1] = res[1].replace (0, 1, "");
+            if (res[1].length () == 0) {
+                res[1] = _(res[0][1]);
+                res[0] = _(res[0][0]);
+            }
         }
 
         return res;
@@ -732,9 +740,16 @@ namespace BoGo {
         if (result > 0) {
             ustring maybeSpecial =
                 (_(text[result - 1]) + _(text[result])).lowercase ();
-            if (maybeSpecial == "qu" || maybeSpecial == "gi")
+            if (maybeSpecial == "qu")
                 return (result + 1) >= text.size () ?
                     ustring::npos : (result + 1);
+            if (maybeSpecial == "gi") {
+                if (result + 1 == text.size())
+                    return result;
+                else
+                    return (result + 1) >= text.size () ?
+                    ustring::npos : (result + 1);
+            }
         }
 
         return result;
