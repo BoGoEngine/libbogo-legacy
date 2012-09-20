@@ -744,7 +744,8 @@ namespace BoGo {
                 return (result + 1) >= text.size () ?
                     ustring::npos : (result + 1);
             if (maybeSpecial == "gi") {
-                if (result + 1 == text.size())
+                if (result + 1 == text.size()
+                    || isConsonant (text[result+1]))
                     return result;
                 else
                     return (result + 1) >= text.size () ?
