@@ -24,7 +24,7 @@ add_custom_target(uninstall
 # Directories with CMakeLists.txt
 add_subdirectory (src)
 add_subdirectory (bindings)
-add_subdirectory (test)
+add_subdirectory (test EXCLUDE_FROM_ALL)
 
 # Output - executables
 # add_executable ()
