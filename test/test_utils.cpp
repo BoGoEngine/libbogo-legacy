@@ -22,6 +22,7 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include "utils.hpp"
+#include "engine.hpp"
 
 using namespace std;
 using namespace Glib;
@@ -38,6 +39,10 @@ vector<ustring> makeustringVec3 (const gchar *e0,
     v[1] = _(e1);
     v[2] = _(e2);
     return v;
+}
+
+TEST (CheckUwa, processKeyUTF8) {
+    EXPECT_STREQ ("ưa", __(processKeyUTF8("ư", 'a')));
 }
 
 TEST (MarkAndWord, CanAddMarkToLetterP) {
