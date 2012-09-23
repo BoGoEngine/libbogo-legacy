@@ -50,14 +50,20 @@ vui lòng tham khảo cách đặt tên trong distro của bạn.
     $ mkdir build && cd build
     $ cmake .. && make install
 
+### Build debug, tests
+
 **Ghi chú:** trước khi có thể biên dịch, bạn cần vào thư mục gốc của project,
 chạy lệnh:
 
     $ git submodule init
     $ git submodule update
 
-để tải gtest về thư mục ./gtest, hoặc bạn có thể comment dòng add_subdirectory (test)
-trong file CMakeLists.txt
+Sau đó build BoGo trong chế độ Debug và chạy các bài test:
+
+    $ mkdir build && cd build
+    $ cmake "-DCMAKE_BUILD_TYPE:STRING=Debug" ..
+    $ make all test_utils
+    $ test/test_utils
 
 ### Build gói debian
 
