@@ -42,6 +42,14 @@ vui lòng tham khảo cách đặt tên trong distro của bạn.
 
 * glibmm 2.4
 * gcc 4.2+
+* gir1.2-ibus1.0
+
+### Cách xử lí tạm thời lỗi module not found (đã test trên Ubuntu 12.04)
+
+Thêm file bogo.conf với nội dung
+    /usr/local/lib
+Chạy lệnh
+    ldconfig
 
 ## Hướng dẫn build
 
