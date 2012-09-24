@@ -72,11 +72,6 @@ namespace BoGo {
             return result;
         }
 
-        // Quick and dirty hack for "uwa" -> "ưa"
-        if ( (key == 'a') && (text.find_last_of("ư") == text.size() -1)) {
-            return addChar (text, _(key));
-        }
-
         TransformTypeT markOrAccent;
         // cerr << "Text >> " << __(text) << " -> " << endl;
         ustring res = "";
