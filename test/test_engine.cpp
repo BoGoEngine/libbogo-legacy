@@ -30,13 +30,10 @@ using namespace BoGo;
 #define _(s) (ustring ("") + s)
 #define __(s) (ustring ("") + s).c_str ()
 
-
-
-TEST (TextManipulation, Misc) {
+TEST (TextManipulation, Fallback) {
     EXPECT_STREQ ("xưa", __(processKey(_("xư"), 'a')));
+    EXPECT_STREQ ("sửa", __(processKey(_("sử"), 'a')));
 }
-
-
 
 int main (int argc, char *argv[]) {
     testing::InitGoogleTest (&argc, argv);
