@@ -56,6 +56,9 @@ namespace BoGo {
 
         gchar lowCaseKey = _(key).lowercase ()[0];
         ustringArrayT availTrans = findTransform (__(lowCaseKey), im);
+        availTrans = refineTransform (availTrans, text);
+
+        // TODO refactor
 
         // Case: `key` is not for transforming
         if (availTrans.size () == 0)
@@ -93,7 +96,10 @@ namespace BoGo {
                 res = addChar (removeMarksFromLastWord (text), _(key));
             else
                 res = addChar (removeAccentFromLastWord (text), _(key));
+            // res = addChar (text, _(key));
         }
+
+
 
         return res;
     }

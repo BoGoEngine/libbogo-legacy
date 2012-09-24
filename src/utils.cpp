@@ -891,6 +891,16 @@ namespace BoGo {
         return canAddMarkToLetterP (_(letter), mark);
     }
 
+    bool canAddMarkToWordP (ustring word, Marks mark) {
+        bool result = false;
+
+        for (int i = 0; i < word.length (); i ++) {
+            result = result || canAddMarkToLetterP (_(word[i]), mark);
+        }
+
+        return result;
+    }
+
     ustring getTransformResult (ustring key_trans) {
         ustring trans = key_trans.erase (0, 1);
         while (trans[0] == ' ' ) {
@@ -908,6 +918,27 @@ namespace BoGo {
             }
         }
         return trans;
+    }
+
+    ustringArrayT refineTransform (ustringArrayT oldTransform, ustring word) {
+        ustringArrayT newTransform;
+
+        for (guint i = 0; i < oldTransform.size(); i++) {
+            const gchar *trans = oldTransform[i].c_str ();
+            TransformTypeT tmpMarkOrAccent = getTransformType (trans[2]);
+            TransformT tmpTrans = getTransform (trans[2]);
+
+            if (tmpMarkOrAccent == TRANSFORM_MARK) {
+                if (canAddMarkToWordP (word, tmpTrans)) {
+                    newTransform.push_back (oldTransform[i]);
+                }
+            }
+            else {
+                newTransform.push_back (oldTransform[i]);
+            }
+        }
+
+        return newTransform;
     }
 
     ustring addChar (ustring str, ustring ch) {
