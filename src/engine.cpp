@@ -96,7 +96,6 @@ namespace BoGo {
                 res = addChar (removeMarksFromLastWord (text), _(key));
             else
                 res = addChar (removeAccentFromLastWord (text), _(key));
-            // res = addChar (text, _(key));
         }
 
 
