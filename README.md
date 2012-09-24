@@ -42,11 +42,14 @@ vui lòng tham khảo cách đặt tên trong distro của bạn.
 
 * glibmm 2.4
 * gcc 4.2+
+* gir1.2-ibus1.0
 
 ## Hướng dẫn build
 
 __Với bản ở branch master__
+
 Bản này cần sử dụng hai lệnh sau để cập nhật git submodule mới make thành công được:
+
     git submodule init
     git submodule update
 
