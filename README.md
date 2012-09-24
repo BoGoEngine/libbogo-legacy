@@ -42,21 +42,20 @@ vui lòng tham khảo cách đặt tên trong distro của bạn.
 
 * glibmm 2.4
 * gcc 4.2+
-* gir1.2-ibus1.0
-
-### Cách xử lí tạm thời lỗi module not found (đã test trên Ubuntu 12.04)
-
-Thêm file bogo.conf với nội dung
-    /usr/local/lib
-Chạy lệnh
-    ldconfig
 
 ## Hướng dẫn build
+
+__Với bản ở branch master__
+Bản này cần sử dụng hai lệnh sau để cập nhật git submodule mới make thành công được:
+    git submodule init
+    git submodule update
 
 ### Build bình thường
 
     $ mkdir build && cd build
     $ cmake .. && make install
+
+### Build debug, tests
 
 **Ghi chú:** trước khi có thể biên dịch, bạn cần vào thư mục gốc của project,
 chạy lệnh:
@@ -64,8 +63,12 @@ chạy lệnh:
     $ git submodule init
     $ git submodule update
 
-để tải gtest về thư mục ./gtest, hoặc bạn có thể comment dòng add_subdirectory (test)
-trong file CMakeLists.txt
+Sau đó build BoGo trong chế độ Debug và chạy các bài test:
+
+    $ mkdir build && cd build
+    $ cmake "-DCMAKE_BUILD_TYPE:STRING=Debug" ..
+    $ make all test_utils
+    $ test/test_utils
 
 ### Build gói debian
 
