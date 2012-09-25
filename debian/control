@@ -5,6 +5,7 @@ Maintainer: Trung Ngo <ndtrung4419@gmail.com>
 Build-Depends: debhelper (>= 8.1.3),
  pkg-config,
  cmake
+ libglibmm-2.4-dev
 Standards-Version: 3.9.3
 Homepage: https://github.com/BoGoEngine/bogo
 Vcs-Git: git://github.com/BoGoEngine/bogo.git
