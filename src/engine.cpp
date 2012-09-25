@@ -64,9 +64,11 @@ namespace BoGo {
         // Case: `key` is not for transforming
         if (availTrans.size () == 0) {
             ustring result = addChar (text, _(key));
-            Accents accent = getAccentFromWord (result);
-            result = removeAccentFromLastWord (result);
-            result = addAccentToText (result, accent);
+            if (hasValidEndingConsonantsP (result)) {
+                Accents accent = getAccentFromWord (result);
+                result = removeAccentFromLastWord (result);
+                result = addAccentToText (result, accent);
+            }
             return result;
         }
 
