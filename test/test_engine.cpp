@@ -35,6 +35,10 @@ TEST (TextManipulation, Fallback) {
     EXPECT_STREQ ("sửa", __(processKey(_("sử"), 'a')));
 }
 
+TEST (TextManipulation, RearrangeAccent) {
+    EXPECT_STREQ ("tuấn", __(processKey(_("túâ"), 'n')));
+}
+
 int main (int argc, char *argv[]) {
     testing::InitGoogleTest (&argc, argv);
     int dummyVal = RUN_ALL_TESTS ();
