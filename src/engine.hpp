@@ -44,7 +44,7 @@ namespace BoGo {
                      gchar key,
                      const gchar *result,
                      InputMethodT im = makeStandardIM (IM_SIMPLETELEX),
-                     CharSetT charset = CHARSET_UTF8);
+                     CharsetT charset = CHARSET_UTF8);
 }
 
 #endif

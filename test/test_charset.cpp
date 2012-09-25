@@ -23,6 +23,7 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include <charset.hpp>
+#include <c_interfaces.cpp>
 
 using namespace std;
 using namespace Glib;
@@ -33,8 +34,10 @@ using namespace BoGo;
 
 TEST (EncodingConverter, UTF8ToTCVN3) {
     EXPECT_STREQ ("aA¨¡©¢bBcCdD®§eEª£fFgGhHiIjJkKlLmMnNoO«¤¬¥pPqQrRsStTuU­¦vVwWxXyYzZ",
-                  utf8toCharset (_("aAăĂâÂbBcCdDđĐeEêÊfFgGhHiIjJkKlLmMnNoOôÔơƠpPqQrRsStTuUưƯvVwWxXyYzZ"),
-                                 "", CHARSET_TCVN3));
+                  utf8ToCharset (_("aAăĂâÂbBcCdDđĐeEêÊfFgGhHiIjJkKlLmMnNoOôÔơƠpPqQrRsStTuUưƯvVwWxXyYzZ"), CHARSET_TCVN3));
+
+    EXPECT_STREQ ("aA¨¡©¢bBcCdD®§eEª£fFgGhHiIjJkKlLmMnNoO«¤¬¥pPqQrRsStTuU­¦vVwWxXyYzZ",
+                  c_utf8ToCharset (__("aAăĂâÂbBcCdDđĐeEêÊfFgGhHiIjJkKlLmMnNoOôÔơƠpPqQrRsStTuUưƯvVwWxXyYzZ"), CHARSET_TCVN3));
 }
 
 int main (int argc, char *argv[]) {

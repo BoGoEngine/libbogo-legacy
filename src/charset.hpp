@@ -20,17 +20,20 @@
 
 */
 
+#ifndef CHARSET_H
+#define CHARSET_H
+
 #include <glibmm/ustring.h>
 
 namespace BoGo {
 
     using namespace Glib;
 
-    typedef guint CharSetT;
+    typedef guint CharsetT;
     typedef ustring::size_type _size_t_;
 
     const guint NUMBER_OF_CHARSETS = 3;
-    const CharSetT CHARSET_UTF8 = 0,
+    const CharsetT CHARSET_UTF8 = 0,
         CHARSET_TCVN3 = 1,
         CHARSET_VNI = 2;
 
@@ -63,6 +66,8 @@ namespace BoGo {
         0XFE, 0XAE
     };
 
-    const gchar * utf8toCharset (ustring src, const gchar *dest, CharSetT charset);
+    const gchar * utf8ToCharset (ustring src, CharsetT charset);
 
 }
+
+#endif

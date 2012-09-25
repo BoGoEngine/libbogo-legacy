@@ -37,7 +37,7 @@ namespace BoGo {
 #define __(x) (ustring ("") + x).c_str ()
 
 
-    // void utf8toCharset (ustring src, const gchar *dest, CharSetT charset) {
+    // void utf8toCharset (ustring src, const gchar *dest, CharsetT charset) {
     //     ustring result = ustring("");
     //     for (_size_t_ i = 0; i < src.length (); i++) {
     //         _size_t_ pos = UTF8_CHARS.find (src[i]);
@@ -49,8 +49,8 @@ namespace BoGo {
     //     return result;
     // }
 
-    const gchar * utf8toCharset (ustring src, const gchar *dest, CharSetT charset) {
-        ustring result = ustring("");
+    const gchar * utf8ToCharset (ustring src, CharsetT charset) {
+        ustring result = std::string("");
 
         const unsigned int * destCharset;
 
@@ -67,6 +67,4 @@ namespace BoGo {
         }
         return result.c_str ();
     }
-
-
 }

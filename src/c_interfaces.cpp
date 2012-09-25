@@ -20,10 +20,17 @@
 */
 
 #include <engine.hpp>
+#include <charset.hpp>
 
 using namespace BoGo;
 
 extern "C" const char* c_processKey  (char* text, char key) {
-        ustring utext = ustring(text);
-        return processKey (utext, key).c_str ();
+    ustring utext = ustring(text);
+    return processKey (utext, key).c_str ();
+}
+
+extern "C" const char* c_utf8ToCharset(const char* text, CharsetT charset) {
+    ustring utext = ustring(text);
+    const char * result = utf8ToCharset (utext, charset);
+    return result;
 }

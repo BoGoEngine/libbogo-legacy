@@ -15,6 +15,8 @@ add_library (bogo SHARED
   engine.hpp
   utils.cpp
   utils.hpp
+  charset.hpp
+  charset.cpp
   c_interfaces.cpp
   )
 

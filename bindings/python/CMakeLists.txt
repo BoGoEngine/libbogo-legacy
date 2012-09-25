@@ -5,6 +5,6 @@ print get_python_lib(plat_specific=True, prefix='')"
 
 install (FILES
  __init__.py
- Charset.py
+# Charset.py
  DESTINATION "${PYTHON_SITE_PACKAGES}/BoGo"
  )
