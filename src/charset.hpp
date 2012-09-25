@@ -1,3 +1,25 @@
+/*
+
+  This file is a part of BoGoEngine project.
+
+  Copyright (C) 2012 Dương H. Nguyễn <cmpitg@gmail.com>
+  Copyright (C) 2012 Dương Quang Hà <contact@haqduong.net>
+
+  BoGoEngine is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  BoGoEngine is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with BoGoEngine.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
 #include <glibmm/ustring.h>
 
 namespace BoGo {
@@ -5,6 +27,7 @@ namespace BoGo {
     using namespace Glib;
 
     typedef guint CharSetT;
+    typedef ustring::size_type _size_t_;
 
     const guint NUMBER_OF_CHARSETS = 3;
     const CharSetT CHARSET_UTF8 = 0,
@@ -39,5 +62,7 @@ namespace BoGo {
         0XF2, 0XF4, 0XF5, 0XF8, 0XF6, 0XF7, 0XF9, 0XAD, 0XFA, 0XFD, 0XFB, 0XFC,
         0XFE, 0XAE
     };
+
+    const gchar * utf8toCharset (ustring src, const gchar *dest, CharSetT charset);
 
 }

@@ -3,6 +3,7 @@
   This file is a part of BoGoEngine project.
 
   Copyright (C) 2012 Dương H. Nguyễn <cmpitg@gmail.com>
+  Copyright (C) 2012 Duong Quang Ha <contact@haqduong.net>
 
   BoGoEngine is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -259,6 +260,7 @@ namespace BoGo {
     ustring removeAccentFromLastWord (ustring str);
 
     ustringArrayT findTransform (ustring ch, InputMethodT im);
+    ustringArrayT refineTransform (ustringArrayT oldTransform, ustring word);
     TransformTypeT getTransformType (const gchar transChar);
 
     ustring toRawText (ustring text);
@@ -281,6 +283,7 @@ namespace BoGo {
 
     bool canAddMarkToLetterP (ustring letter, Marks mark);
     bool canAddMarkToLetterP (const gchar *letter, Marks mark);
+    bool canAddMarkToWordP (ustring word, Marks mark);
 
     _size_t_ getLastPseudoWordPos (ustring text);
     _size_t_ getLastPseudoWordPos (string text);

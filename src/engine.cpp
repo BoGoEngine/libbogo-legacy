@@ -3,6 +3,7 @@
   This file is a part of BoGoEngine project.
 
   Copyright (C) 2012 Dương "Yang" ヤン Nguyễn <cmpitg@gmail.com>
+  Copyright (C) 2012 Duong Quang Ha <contact@haqduong.net>
 
   BoGoEngine is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -56,6 +57,9 @@ namespace BoGo {
 
         gchar lowCaseKey = _(key).lowercase ()[0];
         ustringArrayT availTrans = findTransform (__(lowCaseKey), im);
+        availTrans = refineTransform (availTrans, text);
+
+        // TODO refactor
 
         // Case: `key` is not for transforming
         if (availTrans.size () == 0)
@@ -99,6 +103,8 @@ namespace BoGo {
             else
                 res = addChar (removeAccentFromLastWord (text), _(key));
         }
+
+
 
         return res;
     }

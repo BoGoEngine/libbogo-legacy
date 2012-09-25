@@ -42,6 +42,7 @@ vui lòng tham khảo cách đặt tên trong distro của bạn.
 
 * glibmm 2.4
 * gcc 4.2+
+* gir1.2-ibus1.0
 
 ## Hướng dẫn build
 
@@ -55,8 +56,8 @@ vui lòng tham khảo cách đặt tên trong distro của bạn.
 **Ghi chú:** trước khi có thể biên dịch, bạn cần vào thư mục gốc của project,
 chạy lệnh:
 
-    $ git submodule init
-    $ git submodule update
+    git submodule init
+    git submodule update
 
 Sau đó build BoGo trong chế độ Debug và chạy các bài test:
 
