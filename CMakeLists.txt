@@ -1,6 +1,9 @@
 cmake_minimum_required (VERSION 2.6)
 project (BOGOENGINE)
 
+# Find Python interpreter
+find_package (PythonInterp 2.7)
+
 # Find glibmm
 find_package (PkgConfig)
 pkg_check_modules (GLIBMM glibmm-2.4)
