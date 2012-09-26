@@ -1,3 +1,11 @@
+bogo (0.0.99+20120926) precise; urgency=low
+
+  * New upstream release
+    - Allow more typing freedom
+  * New development date based version system
+
+ -- Trung Ngo <ndtrung4419@gmail.com>  Wed, 26 Sep 2012 23:09:48 +0700
+
 bogo (0.0.99+0.1.0alpha1.3) precise; urgency=low
 
   * Remove python-bogo so that libbogo0 will install all bindings.
