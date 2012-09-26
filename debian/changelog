@@ -1,3 +1,9 @@
+bogo (0.0.99+0.1.0alpha1.3) precise; urgency=low
+
+  * Remove python-bogo so that libbogo0 will install all bindings.
+
+ -- Trung Ngo <ndtrung4419@gmail.com>  Wed, 26 Sep 2012 11:32:47 +0700
+
 bogo (0.0.99+0.1.0alpha1.2) precise; urgency=low
 
   * Fix python binding installation

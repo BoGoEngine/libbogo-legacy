@@ -1,1 +1,2 @@
-debian/tmp/usr/lib/libbogo.so*
+debian/libbogo0/usr/lib/libbogo.so*
+debian/libbogo0/usr/lib/python*/*
